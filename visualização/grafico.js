@@ -1,279 +1,460 @@
+let conjuntos = [
+  {
+    nome: "Conjunto 1",
+    desempenho: 51,
+    interchange: "1,8%",
+    utilizacao: "35%",
+    lgd: "15%",
+    inadFisica: "4%",
+    inadFinanceira: "3%",
+    limite: "R$ 12.000"
+  },
 
+  {
+    nome: "Conjunto 2",
+    desempenho: 71,
+    interchange: "2,1%",
+    utilizacao: "55%",
+    lgd: "25%",
+    inadFisica: "7%",
+    inadFinanceira: "6%",
+    limite: "R$ 25.000"
+  },
 
-let sliders = [];
-let variables = [
-  "Investimento em Marketing",
-  "Qualidade do Produto",
-  "Treinamento da Equipe",
-  "Tecnologia",
-  "Atendimento"
+  {
+    nome: "Conjunto 3",
+    desempenho: 89,
+    interchange: "2,6%",
+    utilizacao: "78%",
+    lgd: "40%",
+    inadFisica: "12%",
+    inadFinanceira: "11%",
+    limite: "R$ 50.000"
+  }
 ];
 
-let bestScore = 0;
-let bestScenario = [];
+let hoveredBar = -1;
 
 function setup() {
-  createCanvas(1200, 700);
+
+  createCanvas(1450, 1020);
+
   textFont("Arial");
-
-  for (let i = 0; i < variables.length; i++) {
-
-    let slider = createSlider(0, 100, 50);
-
-    slider.position(40, 120 + i * 90);
-    slider.style("width", "280px");
-
-    sliders.push(slider);
-  }
 }
 
 function draw() {
 
-  background(242);
+  background(247);
 
-  drawHeader();
+  hoveredBar = -1;
 
-  drawControlPanel();
+  drawLeftPanel();
 
-  let data = calculatePerformance();
+  drawChart();
 
-  drawPerformanceChart(data);
-
-  drawAnalysisPanel(data);
-
-  updateBestScenario(data.score);
+  drawBottomCard();
 }
 
+function drawLeftPanel() {
 
-function drawHeader() {
+  fill(255);
+  stroke(225);
 
-  fill(20);
-  textSize(32);
-  text("Dashboard Inteligente de Simulação", 35, 45);
+  rect(30, 30, 420, 940, 18);
 
-  fill(90);
-  textSize(16);
+  noStroke();
+
+  fill(15);
+
+  textSize(28);
 
   text(
-    "Altere os parâmetros para descobrir o melhor desempenho do modelo",
-    35,
+    "Conjuntos de Parâmetros",
+    55,
     75
   );
-}
 
+  let startY = 110;
 
-function drawControlPanel() {
+  for (let i = 0; i < conjuntos.length; i++) {
 
-  fill(255);
-  stroke(220);
-
-  rect(20, 100, 340, 520, 20);
-
-  fill(25);
-  noStroke();
-
-  textSize(22);
-  text("Painel de Variáveis", 40, 140);
-
-  textSize(15);
-
-  for (let i = 0; i < variables.length; i++) {
-
-    let value = sliders[i].value();
-
-    fill(40);
-
-    text(
-      variables[i] + ": " + value + "%",
-      40,
-      180 + i * 90
-    );
-
-    // Barra visual
-    fill(220);
-    rect(40, 195 + i * 90, 260, 12, 10);
-
-    fill(60, 120, 255);
-    rect(
-      40,
-      195 + i * 90,
-      map(value, 0, 100, 0, 260),
-      12,
-      10
+    drawConjuntoCard(
+      conjuntos[i],
+      startY + i * 280
     );
   }
 }
 
+function drawConjuntoCard(conjunto, y) {
 
+  fill(248);
+  stroke(230);
 
-function calculatePerformance() {
+  rect(50, y, 380, 250, 14);
 
-  let marketing = sliders[0].value();
-  let quality = sliders[1].value();
-  let training = sliders[2].value();
-  let tech = sliders[3].value();
-  let service = sliders[4].value();
+  fill(37, 99, 235);
+  noStroke();
 
-  let score =
-    marketing * 0.25 +
-    quality * 0.30 +
-    training * 0.15 +
-    tech * 0.20 +
-    service * 0.10;
-
-  let efficiency =
-    (quality + service + training) / 3;
-
-  let growth =
-    (marketing + tech) / 2;
-
-  return {
-    score: score.toFixed(1),
-    efficiency: efficiency.toFixed(1),
-    growth: growth.toFixed(1)
-  };
-}
-
-
-
-function drawPerformanceChart(data) {
+  rect(70, y + 20, 140, 38, 8);
 
   fill(255);
-  stroke(220);
-
-  rect(400, 100, 760, 360, 20);
-
-  fill(25);
-  noStroke();
-
-  textSize(24);
-  text("Desempenho do Modelo", 430, 140);
-
-  let chartData = [
-    Number(data.score),
-    Number(data.efficiency),
-    Number(data.growth)
-  ];
-
-  let labels = [
-    "Performance",
-    "Eficiência",
-    "Crescimento"
-  ];
-
-  let colors = [
-    [52, 152, 219],
-    [46, 204, 113],
-    [241, 196, 15]
-  ];
-
-  let startX = 500;
-  let barWidth = 120;
-
-  for (let i = 0; i < chartData.length; i++) {
-
-    let value = chartData[i];
-
-    let h = map(value, 0, 100, 0, 220);
-
-    let x = startX + i * 180;
-    let y = 380 - h;
-
-    fill(colors[i][0], colors[i][1], colors[i][2]);
-
-    rect(x, y, barWidth, h, 12);
-
-    fill(30);
-    textAlign(CENTER);
-
-    textSize(20);
-    text(value + "%", x + barWidth / 2, y - 15);
-
-    textSize(16);
-    text(labels[i], x + barWidth / 2, 410);
-  }
-
-  stroke(255, 80, 80);
-  strokeWeight(2);
-
-  line(430, 220, 1120, 220);
-
-  noStroke();
-  fill(255, 80, 80);
-
-  textSize(14);
-  text("Meta ideal", 1080, 210);
-}
-
-
-
-function drawAnalysisPanel(data) {
-
-  fill(255);
-  stroke(220);
-
-  rect(400, 500, 760, 140, 20);
-
-  fill(20);
-  noStroke();
-
-  textSize(24);
-  text("Análise Inteligente", 430, 540);
-
-  let analysis = "";
-
-  if (data.score >= 85) {
-
-    analysis =
-      "Excelente cenário. O modelo apresenta alta eficiência e ótimo potencial de crescimento.";
-
-  } else if (data.score >= 70) {
-
-    analysis =
-      "Bom desempenho geral. Pequenos ajustes podem melhorar ainda mais os resultados.";
-
-  } else if (data.score >= 50) {
-
-    analysis =
-      "Desempenho moderado. Recomenda-se aumentar investimento em tecnologia e qualidade.";
-
-  } else {
-
-    analysis =
-      "Baixo desempenho detectado. O cenário atual apresenta riscos operacionais.";
-  }
-
-  fill(60);
-
-  textSize(16);
-
-  text(
-    analysis,
-    430,
-    585,
-    680
-  );
-  fill(0, 150, 80);
 
   textSize(18);
 
   text(
-    "Melhor performance encontrada: " + bestScore + "%",
-    430,
-    620
+    conjunto.nome,
+    88,
+    y + 45
+  );
+
+  fill(45);
+
+  textSize(14);
+
+  let labelX = 70;
+  let valueX = 335;
+
+  let startTextY = y + 95;
+
+  let spacing = 32;
+
+  text(
+    "Interchange",
+    labelX,
+    startTextY
+  );
+
+  text(
+    conjunto.interchange,
+    valueX,
+    startTextY
+  );
+
+  text(
+    "Taxa média de utilização",
+    labelX,
+    startTextY + spacing
+  );
+
+  text(
+    conjunto.utilizacao,
+    valueX,
+    startTextY + spacing
+  );
+
+  text(
+    "Loss Given Default",
+    labelX,
+    startTextY + spacing * 2
+  );
+
+  text(
+    conjunto.lgd,
+    valueX,
+    startTextY + spacing * 2
+  );
+
+  text(
+    "Inadimplência física máxima",
+    labelX,
+    startTextY + spacing * 3
+  );
+
+  text(
+    conjunto.inadFisica,
+    valueX,
+    startTextY + spacing * 3
+  );
+
+  text(
+    "Inadimplência financeira máxima",
+    labelX,
+    startTextY + spacing * 4
+  );
+
+  text(
+    conjunto.inadFinanceira,
+    valueX,
+    startTextY + spacing * 4
+  );
+
+  text(
+    "Limite máximo concedível",
+    labelX,
+    startTextY + spacing * 5
+  );
+
+  text(
+    conjunto.limite,
+    290,
+    startTextY + spacing * 5
   );
 }
 
-/
+function drawChart() {
 
-function updateBestScenario(currentScore) {
+  fill(255);
+  stroke(225);
 
-  currentScore = Number(currentScore);
+  rect(490, 30, 920, 670, 18);
 
-  if (currentScore > bestScore) {
+  noStroke();
 
-    bestScore = currentScore;
+  fill(15);
 
-    bestScenario = sliders.map(s => s.value());
+  textSize(34);
+
+  text(
+    "Comparação dos Conjuntos",
+    525,
+    85
+  );
+
+  fill(90);
+
+  textSize(20);
+
+  text(
+    "Resultado da base de clientes",
+    525,
+    120
+  );
+
+  let chartX = 610;
+  let chartY = 180;
+  let chartHeight = 380;
+  let chartWidth = 650;
+
+  stroke(230);
+
+  line(
+    chartX,
+    chartY + chartHeight,
+    chartX + chartWidth,
+    chartY + chartHeight
+  );
+
+  line(
+    chartX,
+    chartY,
+    chartX,
+    chartY + chartHeight
+  );
+
+  for (let i = 0; i <= 5; i++) {
+
+    let y = map(
+      i,
+      0,
+      5,
+      chartY + chartHeight,
+      chartY
+    );
+
+    stroke(235);
+
+    line(
+      chartX,
+      y,
+      chartX + chartWidth,
+      y
+    );
+
+    noStroke();
+
+    fill(110);
+
+    textSize(16);
+
+    text(
+      i * 20,
+      chartX - 38,
+      y + 5
+    );
   }
+
+  let barWidth = 110;
+
+  for (let i = 0; i < conjuntos.length; i++) {
+
+    let conjunto = conjuntos[i];
+
+    let x = 700 + i * 170;
+
+    let h = map(
+      conjunto.desempenho,
+      0,
+      100,
+      0,
+      320
+    );
+
+    let y = chartY + chartHeight - h;
+
+    let hovering =
+      mouseX > x &&
+      mouseX < x + barWidth &&
+      mouseY > y &&
+      mouseY < chartY + chartHeight;
+
+    if (hovering) {
+
+      hoveredBar = i;
+
+      fill(29, 78, 216);
+
+    } else {
+
+      fill(
+        96 - i * 10,
+        165 - i * 15,
+        250
+      );
+    }
+
+    noStroke();
+
+    rect(
+      x,
+      y,
+      barWidth,
+      h,
+      12
+    );
+
+    fill(20);
+
+    textAlign(CENTER);
+
+    textSize(24);
+
+    text(
+      conjunto.desempenho + "%",
+      x + barWidth / 2,
+      y - 15
+    );
+
+    fill(40);
+
+    textSize(18);
+
+    text(
+      conjunto.nome,
+      x + barWidth / 2,
+      600
+    );
+  }
+
+  textAlign(LEFT);
+
+  if (hoveredBar != -1) {
+
+    drawTooltip(
+      conjuntos[hoveredBar]
+    );
+  }
+}
+
+function drawTooltip(conjunto) {
+
+  let x = mouseX + 20;
+  let y = mouseY - 10;
+
+  if (x + 340 > width) {
+    x = mouseX - 360;
+  }
+
+  if (y + 240 > height) {
+    y = height - 260;
+  }
+
+  fill(255);
+
+  stroke(210);
+
+  rect(
+    x,
+    y,
+    340,
+    240,
+    14
+  );
+
+  noStroke();
+
+  fill(37, 99, 235);
+
+  textSize(22);
+
+  text(
+    conjunto.nome,
+    x + 20,
+    y + 35
+  );
+
+  fill(45);
+
+  textSize(16);
+
+  let left = x + 20;
+  let right = x + 250;
+
+  text("Interchange", left, y + 75);
+  text(conjunto.interchange, right, y + 75);
+
+  text("Taxa de utilização", left, y + 105);
+  text(conjunto.utilizacao, right, y + 105);
+
+  text("Loss Given Default", left, y + 135);
+  text(conjunto.lgd, right, y + 135);
+
+  text("Inadimplência física", left, y + 165);
+  text(conjunto.inadFisica, right, y + 165);
+
+  text("Inadimplência financeira", left, y + 195);
+  text(conjunto.inadFinanceira, right, y + 195);
+}
+
+function drawBottomCard() {
+
+  fill(255);
+
+  stroke(225);
+
+  rect(490, 740, 920, 140, 18);
+
+  noStroke();
+
+  fill(37, 99, 235);
+
+  ellipse(550, 810, 58, 58);
+
+  fill(255);
+
+  rect(539, 815, 7, 15);
+
+  rect(551, 802, 7, 28);
+
+  rect(563, 788, 7, 42);
+
+  fill(37, 99, 235);
+
+  textSize(24);
+
+  text(
+    "Interpretação",
+    620,
+    790
+  );
+
+  fill(50);
+
+  textSize(18);
+
+  text(
+    "O Conjunto 3 apresentou o melhor desempenho geral da base de clientes, demonstrando maior rentabilidade esperada considerando os parâmetros definidos.",
+    620,
+    825,
+    700
+  );
 }
