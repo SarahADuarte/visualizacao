@@ -9,9 +9,19 @@ Assim, por meio do gráfico gerado, é possível analisar o melhor resultado de 
 
 Para o desenvolvimento inicial da ideia, foi utilizada uma plataforma de notas virtuais para desenhar e entender melhor a solução, obtendo dessa forma o seguinte resultado: 
 
-![Rascunho](Ideia_inicial.jpeg)
+![Rascunho inicial](../Ideia_inicial.jpeg)
 
 Figura 1 — Rascunho inicial
+
+#Resultados Obtivos
+
+A ideia a ser desenvolvida foi ganhando mais clareza conforme a construção da atividade, sendo possível compreender aprimorar os rascunhos e pensamentos iniciais para algo mais concreto e com impacto positivo para os usuários da solução, tendo como resultado a seguinte visualização: 
+
+![Rascunho inicial](../resultados.png)
+
+Figura 2 — Resultado 
+
+Esta visualização, deixa claro para o usuário o melhor resultado, os resultados anteriores e quais os parâmetros geraram impacto no resultado. 
 
 
 
