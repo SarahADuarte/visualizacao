@@ -1,17 +1,4 @@
-// ======================================================
-// DASHBOARD INTELIGENTE - p5.js
-// Simulação de desempenho de modelo
-// ======================================================
-// O gráfico demonstra:
-// - desempenho do modelo
-// - impacto das variáveis
-// - melhor cenário encontrado
-// - análise automática
-//
-// Arquivos:
-// index.html
-// sketch.js
-// ======================================================
+
 
 let sliders = [];
 let variables = [
@@ -29,7 +16,6 @@ function setup() {
   createCanvas(1200, 700);
   textFont("Arial");
 
-  // Criar sliders
   for (let i = 0; i < variables.length; i++) {
 
     let slider = createSlider(0, 100, 50);
@@ -58,9 +44,6 @@ function draw() {
   updateBestScenario(data.score);
 }
 
-// ======================================================
-// HEADER
-// ======================================================
 
 function drawHeader() {
 
@@ -78,9 +61,6 @@ function drawHeader() {
   );
 }
 
-// ======================================================
-// PAINEL DE CONTROLE
-// ======================================================
 
 function drawControlPanel() {
 
@@ -124,9 +104,7 @@ function drawControlPanel() {
   }
 }
 
-// ======================================================
-// CÁLCULO DO MODELO
-// ======================================================
+
 
 function calculatePerformance() {
 
@@ -136,7 +114,6 @@ function calculatePerformance() {
   let tech = sliders[3].value();
   let service = sliders[4].value();
 
-  // Modelo ponderado
   let score =
     marketing * 0.25 +
     quality * 0.30 +
@@ -157,9 +134,7 @@ function calculatePerformance() {
   };
 }
 
-// ======================================================
-// GRÁFICO
-// ======================================================
+
 
 function drawPerformanceChart(data) {
 
@@ -174,7 +149,6 @@ function drawPerformanceChart(data) {
   textSize(24);
   text("Desempenho do Modelo", 430, 140);
 
-  // Dados
   let chartData = [
     Number(data.score),
     Number(data.efficiency),
@@ -219,7 +193,6 @@ function drawPerformanceChart(data) {
     text(labels[i], x + barWidth / 2, 410);
   }
 
-  // Linha de meta
   stroke(255, 80, 80);
   strokeWeight(2);
 
@@ -232,9 +205,7 @@ function drawPerformanceChart(data) {
   text("Meta ideal", 1080, 210);
 }
 
-// ======================================================
-// PAINEL DE ANÁLISE
-// ======================================================
+
 
 function drawAnalysisPanel(data) {
 
@@ -282,8 +253,6 @@ function drawAnalysisPanel(data) {
     585,
     680
   );
-
-  // Melhor resultado encontrado
   fill(0, 150, 80);
 
   textSize(18);
@@ -295,9 +264,7 @@ function drawAnalysisPanel(data) {
   );
 }
 
-// ======================================================
-// SALVA MELHOR CENÁRIO
-// ======================================================
+/
 
 function updateBestScenario(currentScore) {
 
